@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Random Number Generator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Генератор рандомных чисел</h1>
+    <label for="apiKey">API Key:</label>
+    <input type="text" id="apiKey" placeholder="Enter your API key">
+    <label for="minNum">Min число:</label>
+    <input type="number" id="minNum">
+    <label for="maxNum">Max число:</label>
+    <input type="number" id="maxNum">
+    <label for="countNum">Количество:</label>
+    <input type="number" id="countNum" value="1">
+    <button id="getNumbersButton">Получить рандомное число(а)</button>
+    <div id="numbersContainer"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $("#getNumbersButton").click(function() {
+                var apiKey = $("#apiKey").val();
+                var minNum = $("#minNum").val();
+                var maxNum = $("#maxNum").val();
+                var countNum = $("#countNum").val();
+                
+                $.ajax({
+                    url: `/api/v1/random_numbers?minnum=${minNum}&maxnum=${maxNum}&countnum=${countNum}`,
+                    headers: {
+                        "Authorization": "Bearer " + apiKey
+                    },
+                    success: function(data) {
+                        var numbersHtml = "<p>Random Numbers:</p><ul>";
+                        for (var i = 0; i < data.numbers.length; i++) {
+                            numbersHtml += "<li>" + data.numbers[i] + "</li>";
+                        }
+                        numbersHtml += "</ul>";
+                        $("#numbersContainer").html(numbersHtml);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error:", errorThrown);
+                        $("#numbersContainer").html("<p>Error: " + errorThrown + "</p>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
