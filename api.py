@@ -15,19 +15,6 @@ AUTH_HEADER = "Authorization"
 with open("user_token.json", "r") as f:
     API_KEY = json.load(f)
 
-# Функция для логирования действий в файл data_logger.json
-def log_action(user_id, api_key, action, ip_address, media_url=None):
-    log_entry = {
-        "id": user_id,
-        "api_key": api_key,
-        "action": action,
-        "ip": ip_address,
-        "datetime": datetime.now().isoformat(),
-        "media_url": media_url
-    }
-    with open("data_logger.json", "a") as log_file:
-        log_file.write(json.dumps(log_entry) + "\n")
-
 # Путь к папке с фотографиями
 media_folder_fox = "static/animals/fox/"
 media_folder_dog = "static/animals/dog/"
@@ -45,7 +32,6 @@ def random_fox():
             if user["api_key"] == auth_key:
                 random_media_file = random.choice(os.listdir(media_folder_fox))
                 media_url = f'/static/animals/fox/{random_media_file}'
-                log_action(user["id"], auth_key, "api/v1/random_fox", request.remote_addr, media_url)
                 return jsonify({"url": media_url})
         return jsonify({"error": "Unauthorized"}), 401
     else:
@@ -61,7 +47,6 @@ def random_dog():
             if user["api_key"] == auth_key:
                 random_media_file = random.choice(os.listdir(media_folder_dog))
                 media_url = f'/static/animals/dog/{random_media_file}'
-                log_action(user["id"], auth_key, "api/v1/random_dog", request.remote_addr, media_url)
                 return jsonify({"url": media_url})
         return jsonify({"error": "Unauthorized"}), 401
     else:
@@ -77,7 +62,6 @@ def random_cat():
             if user["api_key"] == auth_key:
                 random_media_file = random.choice(os.listdir(media_folder_cat))
                 media_url = f'/static/animals/cat/{random_media_file}'
-                log_action(user["id"], auth_key, "api/v1/random_cat", request.remote_addr, media_url)
                 return jsonify({"url": media_url})
         return jsonify({"error": "Unauthorized"}), 401
     else:
@@ -105,8 +89,6 @@ def random_numbers():
                     return jsonify({"error": str(e)}), 500  # Обработка ошибки генерации чисел
 
                 media_url = random_nums
-                log_action(user["id"], auth_key, f"api/v1/random_numbers: min={min_num}, max={max_num}, count={count_num}", request.remote_addr, media_url)
-                
                 # Очистка множества для будущих генераций
                 existing_numbers.clear()
                 
@@ -135,7 +117,6 @@ def get_random_color():
             if user["api_key"] == auth_key:
                 color_format = request.args.get('format', 'hex')
                 color = generate_random_color(color_format)
-                log_action(user["id"], auth_key, f"api/v1/random_color: format={color_format}", request.remote_addr, color)
                 return jsonify({"color": color})
         return jsonify({"error": "Unauthorized"}), 401
     else:
@@ -155,7 +136,6 @@ def generate_password():
             if user["api_key"] == auth_key:
                 length = int(request.args.get('length', default=12))
                 password = generate_random_password(length)
-                log_action(user["id"], auth_key, f"api/v1/generate_password: length={length}", request.remote_addr, password)
                 return jsonify({"password": password})
         return jsonify({"error": "Unauthorized"}), 401
     else:
@@ -183,7 +163,6 @@ def check_website():
                 website_url = request.args.get('url')
                 if website_url:
                     status = check_website_availability(website_url)
-                    log_action(user["id"], auth_key, "api/v1/check_website", website_url, status)
                     return jsonify({"status": status})
                 else:
                     return jsonify({"error": "Invalid website URL"}), 400
