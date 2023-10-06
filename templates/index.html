@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>TenebraeVersaAPI</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Мои сайты с использованием TenebraeVersaAPI</h1>
+    </div>
+    
+    <div class="card">
+        <h2>Просмотр случайных фотографий собак</h2>
+        <p>Исследуйте коллекцию случайных фотографий с помощью одной кнопки.</p>
+        <a href="api/v1/randomphotodog">Посмотреть</a>
+    </div>
+    
+    <div class="card">
+        <h2>Просмотр случайных фотографий лис</h2>
+        <p>Ознакомьтесь с нашими самыми популярными фотографиями.</p>
+        <a href="api/v1/randomphotofox">Посмотреть</a>
+    </div>
+
+    <div class="card">
+        <h2>Просмотр случайных фотографий кошек</h2>
+        <p>Ознакомьтесь с нашими самыми популярными фотографиями.</p>
+        <a href="api/v1/randomphotocat">Посмотреть</a>
+    </div>
+
+    <div class="card">
+        <h2>Получить рандомные числа</h2>
+        <p>Получить рандомное число(а) от мин значения до макс значения вашего.</p>
+        <a href="api/v1/randomnumber">Посмотреть</a>
+    </div>
+
+    <div class="footer">
+        <p>&copy; TenebraeVersaAPI</p>
+    </div>
+</body>
+</html>
