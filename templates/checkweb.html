@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Website Availability Checker</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Website Availability Checker</h1>
+    <label for="apiKey">API Key:</label>
+    <input type="text" id="apiKey" placeholder="Enter your API key">
+    <label for="websiteUrl">Website URL:</label>
+    <input type="text" id="websiteUrl" placeholder="Enter website URL">
+    <button id="checkButton">Check Availability</button>
+    <div id="resultContainer">
+        <p id="resultText"></p>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            $("#checkButton").click(function() {
+                var apiKey = $("#apiKey").val();
+                var websiteUrl = $("#websiteUrl").val();
+                $.ajax({
+                    url: "/api/v1/check_website?url=" + encodeURIComponent(websiteUrl),
+                    headers: {
+                        "Authorization": "Bearer " + apiKey
+                    },
+                    success: function(data) {
+                        $("#resultText").text("Website is " + data.status);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $("#resultText").text("Error: " + errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
