@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Random Color Generator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Генератор формата цветов</h1>
+    <label for="apiKey">API Key:</label>
+    <input type="text" id="apiKey" placeholder="Enter your API key">
+    <label for="countformat">Формат палитры:</label>
+    <select id="countformat">
+        <option value="hex">Hex</option>
+        <option value="rgb">RGB</option>
+    </select>
+    <button id="getColorButton">Получить рандомный цвет</button>
+    <div id="colorContainer">
+        <div id="randomColor" style="width: 100px; height: 100px;"></div>
+        <p id="colorCode"></p>
+    </div>
+    
+    <script>
+    $(document).ready(function() {
+        $("#getColorButton").click(function() {
+            var apiKey = $("#apiKey").val();
+            var countformat = $("#countformat").val();
+            
+            $.ajax({
+                url: "/api/v1/random_color",
+                headers: {
+                    "Authorization": "Bearer " + apiKey
+                },
+                data: { format: countformat },
+                success: function(data) {
+                    if (countformat === "hex") {
+                        $("#randomColor").css("background-color", data.color);
+                        $("#colorCode").text("Color code: " + data.color);
+                    } else if (countformat === "rgb") {
+                        var rgbColor = data.color;
+                        var rgbString = "rgb(" + rgbColor + ")";
+                        $("#randomColor").css("background-color", rgbString);
+                        $("#colorCode").text("Color code: " + rgbString);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error:", errorThrown);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
