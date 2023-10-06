@@ -7,7 +7,7 @@ TenebraeVersaAPI - это API для получения случайных да�
 1. Клонируйте репозиторий:
 
 ```bash
-git clone https://github.com/yourusername/TenebraeVersaAPI.git
+git clone https://github.com/Tenebraedev/TenebraeVersaAPI.git
 ```
 ## Установите зависимости:
 ```python
